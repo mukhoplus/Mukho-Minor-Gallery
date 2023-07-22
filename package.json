@@ -1,0 +1,23 @@
+{
+  "name": "mukho-minor-gallery",
+  "version": "0.1.0",
+  "description": "묵마갤",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mukhoplus/Mukho-Minor-Gallery.git"
+  },
+  "author": "Mukho",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mukhoplus/Mukho-Minor-Gallery/issues"
+  },
+  "homepage": "https://github.com/mukhoplus/Mukho-Minor-Gallery#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
