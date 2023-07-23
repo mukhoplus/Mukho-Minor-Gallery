@@ -33,7 +33,7 @@ passport.deserializeUser((user, done) => {
     done(null, {"id": id, "nickname": nickname});
 });
 
-passport.use("local-join", new LocalStrategy({
+passport.use("local-signup", new LocalStrategy({
         usernameField: "id",
         passwordField: "password",
         passwordConfirmField: "passwordConfirm",
@@ -42,7 +42,7 @@ passport.use("local-join", new LocalStrategy({
     }, function (req, id, password, done) {
         try {
             // 아이디 중복 확인
-            connection.query("SELECT * FROM user WHERE ID=?", [id], (err, rows) => {
+            connection.query("SELECT * FROM user WHERE id=?", [id], (err, rows) => {
                 if (err) return done(err);
                 if (rows.length) return done(null, false, {message: "중복된 ID입니다."});
             
@@ -70,7 +70,7 @@ passport.use("local-join", new LocalStrategy({
     })
 );
 
-router.post("/", passport.authenticate("local-join", {
+router.post("/", passport.authenticate("local-signup", {
     successRedirect: "/gallery",
     failureRedirect: "/signup",
     failureFlash: true

@@ -5,11 +5,14 @@
     <title>묵호 마이너 갤러리</title>
 </head>
 <body>
-    <h1>로그인 페이지</h1>
-    <form action="/login" method="post">
-        <input type="text" name="username" placeholder="아이디"><br>
-        <input type="password" name="password" placeholder="비밀번호"><br>
+    <h1>묵호 마이너 갤러리</h1>
+    <h2>로그인</h2>
+    <form action="/main" method="post">
+        <input type="text" name="id" placeholder="아이디" required minlength="1" maxlength="20"><br>
+        <input type="password" name="password" placeholder="비밀번호" required minlength="1" maxlength="20"><br>
         <input type="submit" value="로그인">
+        <section class="messages" style="color:crimson;"> <%= message %> </section>
     </form>
+    <button onclick="location.href='/signup'">회원가입</button>
 </body>
 </html>
