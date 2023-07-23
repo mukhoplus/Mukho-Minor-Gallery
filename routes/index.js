@@ -7,7 +7,12 @@ let galleryRouter = require("./galleryRouter");
 let postRouter = require("./postRouter");
 
 router.get("/", (req, res) => {
-    res.redirect("/main");
+    try {
+        if (req.user) res.redirect("/gallery"); 
+        else res.redirect("/main");
+    } catch {
+        res.redirect("/main");
+    }
 });
 
 router.use("/main", mainRouter);
