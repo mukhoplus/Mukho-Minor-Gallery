@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
+const connection = require("../app.js");
 
 router.get("/", (req, res) => {
-    res.render("post.ejs");
+    if (!req.user) res.redirect("/main"); 
+    else res.render("post.ejs");
 });
 
 router.post("/", (req, res) => {
