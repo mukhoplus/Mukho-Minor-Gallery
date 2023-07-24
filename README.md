@@ -1,6 +1,6 @@
 # Mukho-Minor-Gallery
 
-[묵호 마이너 갤러리](http://mukho.r-e.kr:2023/)(Ver 0.2.1)
+[묵호 마이너 갤러리](http://mukho.r-e.kr:2023/)(Ver 0.3.0)
 - Mukstcamp Project 3
 
 ## 특징

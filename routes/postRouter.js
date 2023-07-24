@@ -19,41 +19,52 @@ router.use(cookieParser());
 router.get("/:post_id", (req, res) => {
     if (!req.user) res.redirect("/main"); 
     else {
-        const localCookies = req.cookies;
-
-        if (!localCookies || localCookies[req.params.post_id] !== 'true') {
-            connection.query("UPDATE post SET hit=hit+1 WHERE post_id=?", [req.params.post_id], (err, rows) => {
-                if (err) {
-                    console.error("에러 발생\n" + err.stack);
-                    res.status(500).send("에러 발생");
-                }
-                res.cookie(req.params.post_id, 'true', { maxAge: 60 * 60 * 1000 });
-            });
-        }
-
-        connection.query("SELECT post_id, u.nickname, hit, post_date, title, content, image FROM post p, user u WHERE u.user_id = p.writer AND post_id=?", [req.params.post_id], (err, rows) => {
+        // 예외 처리
+        connection.query("SELECT post_id FROM post WHERE post_id=?", [req.params.post_id], (err, rows) => {
             if (err) {
                 console.error("에러 발생\n" + err.stack);
                 res.status(500).send("에러 발생");
-            } else {
-                const title = rows[0].title;
+            }
+            
+            if (rows.length === 0) res.redirect("/gallery");
+            else {
+                const localCookies = req.cookies;
 
-                connection.query("SELECT comment_id, u.nickname, content, comment_date FROM comment c, user u WHERE post_id=? AND u.user_id = c.writer", [req.params.post_id], (err, com) => {
+            if (!localCookies || localCookies[req.params.post_id] !== 'true') {
+                connection.query("UPDATE post SET hit=hit+1 WHERE post_id=?", [req.params.post_id], (err, rows) => {
                     if (err) {
                         console.error("에러 발생\n" + err.stack);
                         res.status(500).send("에러 발생");
-                    } else {
-                        res.render("post.ejs", {
-                            "id": req.user.id,
-                            "nickname": req.user.nickname,
-                            "row": rows[0],
-                            "comment": com,
-                            "comment_length": com.length,
-                            "title": title,
-                            "post_id": req.params.post_id
-                        });
                     }
                 });
+                res.cookie(req.params.post_id, 'true', { maxAge: 60 * 60 * 1000 });
+            }
+
+            connection.query("SELECT post_id, u.nickname, hit, post_date, title, content, image FROM post p, user u WHERE u.user_id = p.writer AND post_id=?", [req.params.post_id], (err, rows) => {
+                if (err) {
+                    console.error("에러 발생\n" + err.stack);
+                    res.status(500).send("에러 발생");
+                } else {
+                    const title = rows[0].title;
+
+                    connection.query("SELECT comment_id, u.nickname, content, comment_date FROM comment c, user u WHERE post_id=? AND u.user_id = c.writer", [req.params.post_id], (err, com) => {
+                        if (err) {
+                            console.error("에러 발생\n" + err.stack);
+                            res.status(500).send("에러 발생");
+                        } else {
+                            res.render("post.ejs", {
+                                "id": req.user.id,
+                                "nickname": req.user.nickname,
+                                "row": rows[0],
+                                "comment": com,
+                                "comment_length": com.length,
+                                "title": title,
+                                "post_id": req.params.post_id
+                            });
+                        }
+                    });
+                }
+            });
             }
         });
     }
