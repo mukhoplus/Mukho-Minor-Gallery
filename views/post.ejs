@@ -8,12 +8,32 @@
     <form action="delete/<%=post_id%>" method="post">
         <table border="1">
             <tr>
+                <td>제목</td>
+                <td><%=row.title%></td>
+            </tr>
+            <tr>
                 <td>작성자</td>
                 <td><%=row.nickname%></td>
             </tr>
             <tr>
-                <td>제목</td>
-                <td><%=row.title%></td>
+                <%
+                const date = new Date(row.post_date);
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                const hour = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                const seconds = String(date.getSeconds()).padStart(2, '0');
+
+                const formattedDateString = `${year}-${month}-${day} ${hour}:${minutes}:${seconds}`;
+                %>
+
+                <td>작성일</td>
+                <td><%=formattedDateString%></td>
+            </tr>
+            <tr>
+                <td>조회수</td>
+                <td><%=row.hit%></td>
             </tr>
             <tr>
                 <td>내용</td>
@@ -36,26 +56,6 @@
             <%
                 }
             %>
-            <tr>
-                <%
-                const date = new Date(row.post_date);
-                const year = date.getFullYear();
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const day = String(date.getDate()).padStart(2, '0');
-                const hour = String(date.getHours()).padStart(2, '0');
-                const minutes = String(date.getMinutes()).padStart(2, '0');
-                const seconds = String(date.getSeconds()).padStart(2, '0');
-
-                const formattedDateString = `${year}-${month}-${day} ${hour}:${minutes}:${seconds}`;
-                %>
-
-                <td>작성일</td>
-                <td><%=formattedDateString%></td>
-            </tr>
-            <tr>
-                <td>조회수</td>
-                <td><%=row.hit%></td>
-            </tr>
             <tr>
                 <td colspan="3">
                     <a href="/gallery">
@@ -102,7 +102,7 @@
                 <% if(data.nickname == nickname){ %>
                     <td>
                         <form method ="post">
-                            <input type="hidden" name="comment_id" value="<%=data.comment_id%>"/>
+                            <input type="hidden" name="comment_id" value="<%=data.comment_id%>" minLength="1" maxLength="200" />
                             <button type="button" onclick="return deleteComment(this.form);">댓글 삭제</button>
                         </form>
                     </td>
