@@ -7,12 +7,16 @@
     <a href="/main"><h1>묵호 마이너 갤러리</h1></a>
     <h2>회원가입</h2>
     <form action="/signup" method="post">
-        <input type="text" name="id" id="id" placeholder="아이디" required minlength="1" maxlength="20"><br>
-        <input type="password" name="password" id="password" placeholder="비밀번호" required minlength="1" maxlength="20"><br>
+        <input type="text" name="id" id="id" placeholder="아이디" required minlength="2" maxlength="20"><br>
+        <p id="idCheckMsg" style="color:crimson;"></p>
+        <input type="password" name="password" id="password" placeholder="비밀번호" required minlength="2" maxlength="20"><br>
+        <p id="passwordCheckMsg" style="color:crimson;"></p>
         <input type="password" name="passwordConfirm" id="passwordConfirm" placeholder="비밀번호 확인" required minlength="1" maxlength="20"><br>
-        <input type="text" name="nickname" id="nickname" placeholder="닉네임" required minlength="1" maxlength="16"><br>
+        <p id="passwordMatchMsg" style="color:blue;"></p>
+        <input type="text" name="nickname" id="nickname" placeholder="닉네임" required minlength="2" maxlength="16"><br>
+        <p id="nicknameCheckMsg" style="color:crimson;"></p>
         <input type="submit" id="signupButton" value="가입하기" disabled>
-        <span id="passwordMatchMsg" style="color:blue;"></span>
+        
         <section class="messages" style="color:crimson;"> <%= message %> </section>
     </form>
 
@@ -24,12 +28,58 @@
         const passwordMatchMsg = document.getElementById("passwordMatchMsg");
         const signupButton = document.getElementById("signupButton");
 
+        const idRegex = /^[a-zA-Z0-9-_]{4,20}$/;
+        const passwordRegex = /^[a-zA-Z0-9!@#$%^&*()\-_]{4,20}$/;
+        const nicknameRegex = /^[a-zA-Z0-9가-힣-_ ]+$/;
+
+        function idCheck() {
+            const id = idInput.value;
+            if (!idRegex.test(id)) {
+                idCheckMsg.textContent = "아이디는 4~20자의 영문 대소문자, 숫자, 특수문자(_),(-)만 사용 가능합니다.";
+                return false;
+            } else {
+                idCheckMsg.textContent = "";
+                return true;
+            }
+        }
+
+        function passwordCheck() {
+            const password = passwordInput.value;
+            if (!passwordRegex.test(password)) {
+                passwordCheckMsg.textContent = "비밀번호는 4~20자의 영문 대소문자, 숫자, 특수문자(!@#$%^&*()_-)만 사용 가능합니다.";
+                return false;
+            } else {
+                passwordCheckMsg.textContent = "";
+                return true;
+            }
+        }
+
+        function nicknameCheck() {
+            const nickname = nicknameInput.value;
+            console.log("닉닉")
+            if (!nicknameRegex.test(nickname)) {
+                nicknameCheckMsg.textContent = "닉네임은 2~16자의 영문 대소문자, 숫자, 한글, 특수문자(_),(-),( )만 사용 가능합니다.";
+                return false;
+            } else {
+                if(nickname.match(/^[ ]+$/)) {
+                    nicknameCheckMsg.textContent = "닉네임은 1자 이상의 영문 대소문자, 숫자, 한글, 특수문자(_),(-)가 포함되어야 합니다.";
+                    return false;
+                } 
+
+                nicknameCheckMsg.textContent = "";
+                return true;
+            }
+        }
+
         function checkButtonAble() {
             if (checkPasswordMatch()) {
-                if (checkInfoInput()) signupButton.disabled = false;
-                else signupButton.disabled = true;
+                if (checkInfoInput()) {
+                    if(idCheck() && passwordCheck() && nicknameCheck()) signupButton.disabled = false;
+                    return true;
+                }
             }
-            else signupButton.disabled = true;
+            signupButton.disabled = true;
+            return false;
         }
 
         function checkInfoInput() {
@@ -53,6 +103,10 @@
                 }
             }
         }
+
+        idInput.addEventListener("keyup", idCheck);
+        passwordInput.addEventListener("keyup", passwordCheck);
+        nicknameInput.addEventListener("keyup", nicknameCheck);
 
         idInput.addEventListener("keyup", checkButtonAble);
         passwordInput.addEventListener("keyup", checkButtonAble);
