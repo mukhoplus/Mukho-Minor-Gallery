@@ -3,6 +3,7 @@ const router = express.Router();
 const mysql = require("mysql");
 const dbConfig = require("../config/dbConfig.js");
 const moment = require("moment-timezone");
+const cookieParser = require("cookie-parser");
 
 const connection = mysql.createConnection(dbConfig);
 connection.connect((err) => {
@@ -13,36 +14,43 @@ connection.connect((err) => {
     // console.log(`데이터베이스가 연결되었습니다.(${connection.threadId})`);
 });
 
+router.use(cookieParser());
+
 router.get("/:post_id", (req, res) => {
     if (!req.user) res.redirect("/main"); 
     else {
-        connection.query("UPDATE post SET hit=hit+1 WHERE post_id=?", [req.params.post_id], (err, rows) => {
+        const localCookies = req.cookies;
+
+        if (!localCookies || localCookies[req.params.post_id] !== 'true') {
+            connection.query("UPDATE post SET hit=hit+1 WHERE post_id=?", [req.params.post_id], (err, rows) => {
+                if (err) {
+                    console.error("에러 발생\n" + err.stack);
+                    res.status(500).send("에러 발생");
+                }
+                res.cookie(req.params.post_id, 'true', { maxAge: 60 * 60 * 1000 });
+            });
+        }
+
+        connection.query("SELECT post_id, u.nickname, hit, post_date, title, content, image FROM post p, user u WHERE u.user_id = p.writer AND post_id=?", [req.params.post_id], (err, rows) => {
             if (err) {
                 console.error("에러 발생\n" + err.stack);
                 res.status(500).send("에러 발생");
             } else {
-                connection.query("SELECT post_id, u.nickname, hit, post_date, title, content, image FROM post p, user u WHERE u.user_id = p.writer AND post_id=?", [req.params.post_id], (err, rows) => {
+                const title = rows[0].title;
+
+                connection.query("SELECT comment_id, u.nickname, content, comment_date FROM comment c, user u WHERE post_id=? AND u.user_id = c.writer", [req.params.post_id], (err, com) => {
                     if (err) {
                         console.error("에러 발생\n" + err.stack);
                         res.status(500).send("에러 발생");
                     } else {
-                        const title = rows[0].title;
-
-                        connection.query("SELECT comment_id, u.nickname, content, comment_date FROM comment c, user u WHERE post_id=? AND u.user_id = c.writer", [req.params.post_id], (err, com) => {
-                            if (err) {
-                                console.error("에러 발생\n" + err.stack);
-                                res.status(500).send("에러 발생");
-                            } else {
-                                res.render("post.ejs", {
-                                    "id": req.user.id,
-                                    "nickname": req.user.nickname,
-                                    "row": rows[0],
-                                    "comment": com,
-                                    "comment_length": com.length,
-                                    "title": title,
-                                    "post_id": req.params.post_id
-                                });
-                            }
+                        res.render("post.ejs", {
+                            "id": req.user.id,
+                            "nickname": req.user.nickname,
+                            "row": rows[0],
+                            "comment": com,
+                            "comment_length": com.length,
+                            "title": title,
+                            "post_id": req.params.post_id
                         });
                     }
                 });

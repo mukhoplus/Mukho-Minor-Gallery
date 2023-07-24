@@ -6,6 +6,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const session = require("express-session");
 const flash = require("connect-flash");
+const cookieParser = require("cookie-parser");
 
 const { router } = require("./routes/index");
 const appConfig = require("./config/appConfig.js");
@@ -25,6 +26,7 @@ app.use(passport.initialize());
 app.use(passport.session())
 app.use(flash());
 app.use(router);
+app.use(cookieParser());
 
 server.listen(appConfig.port, () => {
     console.log(`묵호 마이너 갤러리(Ver 0.2.0)\n${appConfig.port}번 포트에서 서버가 시작되었어요.`);
