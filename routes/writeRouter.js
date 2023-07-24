@@ -5,6 +5,7 @@ const multer = require("multer");
 const upload = multer({dest: "uploads/"});
 const mysql = require("mysql");
 const dbConfig = require("../config/dbConfig.js");
+const moment = require("moment-timezone");
 
 const connection = mysql.createConnection(dbConfig);
 connection.connect((err) => {
@@ -24,13 +25,7 @@ router.post("/", upload.single("image"), (req, res) => {
     const title = req.body.title;
     const content = req.body.content;
     const writer = req.user.user_id;
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const hour = date.getHours();
-    const minutes = date.getMinutes();
-    const seconds = date.getSeconds();
+    const post_date = moment().tz("Asia/Seoul").format("YYYY-MM-DD HH:mm:ss");
 
     let imageFilePath = null;
     if(req.file) {
@@ -38,7 +33,7 @@ router.post("/", upload.single("image"), (req, res) => {
         imageFilePath = path.join('uploads/', image.filename);
     }
 
-    connection.query("INSERT INTO post(title, content, writer, image, post_date) VALUES(?, ?, ?, ?, ?)", [title, content, writer, imageFilePath, `${year}-${month}-${day} ${hour}:${minutes}:${seconds}`], (err, rows) => {
+    connection.query("INSERT INTO post(title, content, writer, image, post_date) VALUES(?, ?, ?, ?, ?)", [title, content, writer, imageFilePath,post_date], (err, rows) => {
         if (err) {
             console.error("에러 발생\n" + err.stack);
             res.status(500).send("에러 발생");

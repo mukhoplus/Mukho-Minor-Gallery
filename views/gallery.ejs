@@ -11,10 +11,10 @@
     <table border="1">
         <tr>
             <td>번호</td>
-            <td>작성자</td>
             <td>제목</td>
-            <td>조회수</td>
+            <td>글쓴이</td>
             <td>작성일</td>
+            <td>조회수</td>
         </tr>
         <%
         for(let i = (page * page_num) - page_num; i < (page * page_num); ++i) {
@@ -34,10 +34,10 @@
             %>
             <tr>
                 <td><%=data.post_id%></td>
-                <td><%=data.nickname%></td>
                 <td><a href="/post/<%=data.post_id%>"><%=data.title%></a></td>
-                <td><%=data.hit%></td>
+                <td><%=data.nickname%></td>
                 <td><%=formattedDateString%></td>
+                <td><%=data.hit%></td>
             </tr>
         <% }
         }

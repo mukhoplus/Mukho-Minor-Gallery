@@ -1,6 +1,6 @@
 # Mukho-Minor-Gallery
 
-묵호 마이너 갤러리(Ver 0.2.0)
+묵호 마이너 갤러리(Ver 0.2.1)
 - Mukstcamp Project 3
 
 ## 특징

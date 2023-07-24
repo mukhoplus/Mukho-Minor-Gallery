@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mysql = require("mysql");
 const dbConfig = require("../config/dbConfig.js");
+const moment = require("moment-timezone");
 
 const connection = mysql.createConnection(dbConfig);
 connection.connect((err) => {
@@ -65,16 +66,8 @@ router.post("/delete/:post_id", (req, res) => {
 router.post("/:post_id/comment", (req, res) => {
     const content = req.body.comment;
     const writer = req.user.user_id;
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const hour = date.getHours();
-    const minutes = date.getMinutes();
-    const seconds = date.getSeconds();
-
     const post_id = req.params.post_id;
-    const comment_date = `${year}-${month}-${day} ${hour}:${minutes}:${seconds}`;
+    const comment_date = moment().tz("Asia/Seoul").format("YYYY-MM-DD HH:mm:ss");
 
     connection.query("INSERT INTO comment(content, writer, post_id, comment_date) VALUES(?, ?, ?, ?)", [content, writer, post_id, comment_date], (err, rows) => {
         if (err) {
