@@ -2,7 +2,17 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const connection = require("../app.js");
+const mysql = require("mysql");
+const dbConfig = require("../config/dbConfig.js");
+
+const connection = mysql.createConnection(dbConfig);
+connection.connect((err) => {
+    if (err) {
+        console.error("데이터베이스 연결 과정에서 오류가 발생했습니다.\n" + err.stack);
+        return;
+    }
+    // console.log(`데이터베이스가 연결되었습니다.(${connection.threadId})`);
+});
 
 router.get("/", (req, res) => {
     if (req.user) res.redirect("/gallery"); 
@@ -20,9 +30,10 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((user, done) => {
+    const user_id = user.user_id;
     const id = user.id;
     const nickname = user.nickname;
-    done(null, {"id": id, "nickname": nickname});
+    done(null, {"user_id": user_id, "id": id, "nickname": nickname});
 });
 
 passport.use("local-login", new LocalStrategy({
