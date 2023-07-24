@@ -29,5 +29,5 @@ app.use(router);
 app.use(cookieParser());
 
 server.listen(appConfig.port, () => {
-    console.log(`묵호 마이너 갤러리(Ver 0.2.0)\n${appConfig.port}번 포트에서 서버가 시작되었어요.`);
+    console.log(`묵호 마이너 갤러리(Ver 0.3.0)\n${appConfig.port}번 포트에서 서버가 시작되었어요.`);
 });
