@@ -14,7 +14,27 @@ connection.connect((err) => {
 
 router.get("/", (req, res) => {
     if (!req.user) res.redirect("/main"); 
-    else res.render("gallery.ejs", {"id": req.user.id, "nickname": req.user.nickname});
+    else res.redirect("/gallery/1");
+});
+
+router.get("/:page", (req, res) => {
+    if (!req.user) res.redirect("/main"); 
+    else {
+        const page = req.params.page;
+        let length = 0;
+
+        connection.query("SELECT post_id, title, content, u.nickname, hit, post_date FROM post p, user u WHERE u.user_id = p.writer ORDER BY post_id DESC", (err, rows) => {
+            if (err) {
+                console.error("에러 발생\n" + err.stack);
+                res.status(500).send("에러 발생");
+            } else {
+                length = rows.length - 1;
+                res.render("gallery.ejs", {"id": req.user.id, "nickname": req.user.nickname, "rows": rows, "page": page, "length": length, "page_num": 10});
+            }
+        });
+
+        
+    }
 });
 
 module.exports = router;

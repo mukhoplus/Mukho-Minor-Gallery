@@ -4,8 +4,59 @@
     <title>묵호 마이너 갤러리</title>
 </head>
 <body>
-    <h1>묵호 마이너 갤러리</h1>
+    <a href="/main"><h1>묵호 마이너 갤러리</h1></a>
     <h4><%= id %>(<%= nickname %>)</h4>
     <button onclick="location.href='/logout'">로그아웃</button>
+    <hr>
+    <table border="1">
+        <tr>
+            <td>번호</td>
+            <td>작성자</td>
+            <td>제목</td>
+            <td>조회수</td>
+            <td>작성일</td>
+        </tr>
+        <%
+        for(let i = (page * page_num) - page_num; i < (page * page_num); ++i) {
+            if (i > length){
+                ++i;
+            } else {
+                let data = rows[i];
+                const date = new Date(data.post_date);
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                const hour = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                const seconds = String(date.getSeconds()).padStart(2, '0');
+
+                const formattedDateString = `${year}-${month}-${day} ${hour}:${minutes}:${seconds}`;
+            %>
+            <tr>
+                <td><%=data.post_id%></td>
+                <td><%=data.nickname%></td>
+                <td><a href="/post/<%=data.post_id%>"><%=data.title%></a></td>
+                <td><%=data.hit%></td>
+                <td><%=formattedDateString%></td>
+            </tr>
+        <% }
+        }
+        %>
+        <tr>
+            <td colspan="6">
+            <% 
+            for(let j = 0; j < rows.length / page_num ; ++j){
+            %>
+                [<a href="/gallery/<%= j + 1 %>"><%= j + 1 %></a>]
+            <%
+            }
+            %>
+            </td>
+        </tr>
+    </table>
+    <nav class="navbar">
+        <a class="btn btn-outline-primary me-2" href="/write"><input type="button" value="글쓰기"></a>
+    </nav>
+</div>
 </body>
 </html>

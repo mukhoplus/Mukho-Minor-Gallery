@@ -17,6 +17,7 @@ const userSession = session(sessionConfig);
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.use(express.static(path.join(__dirname, "")));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extened: true}));
 app.use(userSession);
@@ -26,5 +27,5 @@ app.use(flash());
 app.use(router);
 
 server.listen(appConfig.port, () => {
-    console.log(`${appConfig.port}번 포트에서 서버가 시작되었어요.`);
+    console.log(`묵호 마이너 갤러리(Ver 0.2.0)\n${appConfig.port}번 포트에서 서버가 시작되었어요.`);
 });
