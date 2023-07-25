@@ -34,7 +34,18 @@
             %>
             <tr>
                 <td><%=data.post_id%></td>
-                <td><a href="/post/<%=data.post_id%>"><%=data.title%><span style="color:gray"> [<%=data.comment_count%>]</span></a></td>
+                <td>
+                    <%
+                    if(data.comment_count > 0) {
+                    %>
+                    <a href="/post/<%=data.post_id%>"><%=data.title%><span style="color:gray"> [<%=data.comment_count%>]</span></a>
+                    <%
+                    } else {
+                    %>
+                    <a href="/post/<%=data.post_id%>"><%=data.title%></a>
+                    <%
+                    }
+                </td>
                 <td><%=data.nickname%></td>
                 <td><%=formattedDateString%></td>
                 <td><%=data.hit%></td>
