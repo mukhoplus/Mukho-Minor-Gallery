@@ -23,7 +23,7 @@ router.get("/:page", (req, res) => {
         const page = req.params.page;
         let length = 0;
 
-        connection.query("SELECT post_id, title, content, u.nickname, hit, post_date FROM post p, user u WHERE u.user_id = p.writer ORDER BY post_id DESC", (err, rows) => {
+        connection.query("SELECT p.post_id, title, p.content, u.nickname, hit, post_date, COUNT(comment_id) AS comment_count FROM post p JOIN user u ON u.user_id = p.writer LEFT JOIN comment c ON c.post_id = p.post_id GROUP BY p.post_id ORDER BY post_id DESC", (err, rows) => {
             if (err) {
                 console.error("에러 발생\n" + err.stack);
                 res.status(500).send("에러 발생");
