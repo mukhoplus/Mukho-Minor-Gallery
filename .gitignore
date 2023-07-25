@@ -1,3 +1,7 @@
 /node_modules
 /config
 /uploads
+
+# 개발 중
+/models
+/controllers
