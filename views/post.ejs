@@ -12,7 +12,7 @@
                 <td><%=row.title%></td>
             </tr>
             <tr>
-                <td>작성자</td>
+                <td>글쓴이</td>
                 <td><%=row.nickname%></td>
             </tr>
             <tr>
@@ -32,12 +32,12 @@
                 <td><%=formattedDateString%></td>
             </tr>
             <tr>
-                <td>조회수</td>
+                <td>조회</td>
                 <td><%=row.hit%></td>
             </tr>
             <tr>
                 <td>내용</td>
-                <td><%=row.content%></td>
+                <td style="white-space: pre-wrap;"><%=row.content%></td>
             </tr>
             <%
                 const imageLink = `\\${row.image}`;
