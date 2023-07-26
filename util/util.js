@@ -1,12 +1,10 @@
-const dbConnection = require("../database/database");
+import dbConnection from "../database/database.js";
 
-module.exports = {
-  queryAsync: function (query, params) {
-    return new Promise((resolve, reject) => {
-      dbConnection.query(query, params, (err, rows) => {
-        if (err) reject(err);
-        else resolve(rows);
-      });
+export const queryAsync = (query, params) => {
+  return new Promise((resolve, reject) => {
+    dbConnection.query(query, params, (err, rows) => {
+      if (err) reject(err);
+      else resolve(rows);
     });
-  },
+  });
 };

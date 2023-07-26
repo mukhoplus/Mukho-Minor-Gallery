@@ -1,3 +1,5 @@
+import passport from "passport";
+
 const mainController = {};
 
 mainController.getMainPage = (req, res) => {
@@ -9,4 +11,12 @@ mainController.getMainPage = (req, res) => {
   }
 };
 
-module.exports = mainController;
+mainController.login = (req, res, next) => {
+  passport.authenticate("local-login", {
+    successRedirect: "/gallery",
+    failureRedirect: "/main",
+    failureFlash: true,
+  })(req, res, next);
+};
+
+export default mainController;

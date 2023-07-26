@@ -1,7 +1,7 @@
-const mysql = require("mysql");
-const dbConfig = require("../config/dbConfig.js");
+import { createConnection } from "mysql";
+import dbConfig from "../config/dbConfig.js";
 
-const connection = mysql.createConnection(dbConfig);
+const connection = createConnection(dbConfig);
 
 connection.connect((err) => {
   if (err) {
@@ -10,8 +10,8 @@ connection.connect((err) => {
     );
     return;
   }
-  
+
   console.log(`데이터베이스가 연결되었습니다.(${connection.threadId})`);
 });
 
-module.exports = connection;
+export default connection;

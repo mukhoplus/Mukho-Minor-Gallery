@@ -1,17 +1,9 @@
-const express = require("express");
-const router = express.Router();
-const mainController = require("../controllers/mainController");
-const passport = require("passport");
+import { Router } from "express";
+const router = Router();
+import mainController from "../controllers/mainController.js";
 
 router.get("/", mainController.getMainPage);
 
-router.post(
-  "/",
-  passport.authenticate("local-login", {
-    successRedirect: "/gallery",
-    failureRedirect: "/main",
-    failureFlash: true,
-  })
-);
+router.post("/", mainController.login);
 
-module.exports = router;
+export default router;

@@ -1,9 +1,9 @@
-const util = require("../util/util");
+import { queryAsync } from "../util/util.js";
 
 const writeModel = {};
 
-writeModel.createPost = async (postInfo) => {
-  await util.queryAsync("INSERT INTO post SET ?", postInfo);
-};
+export async function createPost(postInfo) {
+  await queryAsync("INSERT INTO post SET ?", postInfo);
+}
 
-module.exports = writeModel;
+export default writeModel;

@@ -1,6 +1,13 @@
-const os = require("os");
-const moment = require("moment-timezone");
-const postModel = require("../models/postModel");
+import { type } from "os";
+import moment from "moment-timezone";
+import {
+  getPostById,
+  increasePostHit,
+  getCommentsByPostId,
+  deletePostById,
+  createComment,
+  deleteCommentById,
+} from "../models/postModel.js";
 
 const postController = {};
 
@@ -10,7 +17,7 @@ postController.renderPostPage = async (req, res) => {
   } else {
     try {
       const postId = req.params.post_id;
-      const post = await postModel.getPostById(postId);
+      const post = await getPostById(postId);
 
       if (!post) {
         res.redirect("/gallery");
@@ -19,15 +26,15 @@ postController.renderPostPage = async (req, res) => {
 
         // 조회수 증가
         if (!localCookies || localCookies[postId] !== "true") {
-          await postModel.increasePostHit(postId);
+          await increasePostHit(postId);
           ++post.hit;
           res.cookie(postId, "true", { maxAge: 60 * 60 * 1000 });
         }
-        
-        const comments = await postModel.getCommentsByPostId(postId);
+
+        const comments = await getCommentsByPostId(postId);
 
         res.render("post.ejs", {
-          os_type: os.type(),
+          os_type: type(),
           id: req.user.id,
           nickname: req.user.nickname,
           row: post,
@@ -47,7 +54,7 @@ postController.renderPostPage = async (req, res) => {
 postController.deletePost = async (req, res) => {
   try {
     const postId = req.params.post_id;
-    await postModel.deletePostById(postId);
+    await deletePostById(postId);
     res.redirect("/gallery");
   } catch (err) {
     console.error("Error deleting post:", err);
@@ -62,7 +69,7 @@ postController.createComment = async (req, res) => {
     const postId = req.params.post_id;
     const commentDate = moment().tz("Asia/Seoul").format("YYYY-MM-DD HH:mm:ss");
 
-    await postModel.createComment(content, writer, postId, commentDate);
+    await createComment(content, writer, postId, commentDate);
     res.redirect(`/post/${postId}`);
   } catch (err) {
     console.error("Error creating comment:", err);
@@ -74,7 +81,7 @@ postController.deleteComment = async (req, res) => {
   try {
     const commentId = req.body.comment_id;
     const postId = req.params.post_id;
-    await postModel.deleteCommentById(commentId);
+    await deleteCommentById(commentId);
     res.redirect(`/post/${postId}`);
   } catch (err) {
     console.error("Error deleting comment:", err);
@@ -82,4 +89,4 @@ postController.deleteComment = async (req, res) => {
   }
 };
 
-module.exports = postController;
+export default postController;

@@ -5,4 +5,4 @@ signupController.getSignupPage = (req, res) => {
   res.render("signup.ejs", { message: msg });
 };
 
-module.exports = signupController;
+export default signupController;

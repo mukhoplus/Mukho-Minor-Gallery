@@ -1,4 +1,4 @@
-const galleryModel = require("../models/galleryModel");
+import { getGalleryData } from "../models/galleryModel.js";
 
 const galleryController = {};
 
@@ -16,7 +16,7 @@ galleryController.renderGallery = async (req, res) => {
   } else {
     try {
       const page = req.params.page;
-      const rows = await galleryModel.getGalleryData();
+      const rows = await getGalleryData();
 
       res.render("gallery.ejs", {
         id: req.user.id,
@@ -33,4 +33,4 @@ galleryController.renderGallery = async (req, res) => {
   }
 };
 
-module.exports = galleryController;
+export default galleryController;

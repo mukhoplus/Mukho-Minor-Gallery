@@ -38,9 +38,9 @@
           <td style="white-space: pre-wrap"><%=row.content%></td>
         </tr>
         <%
-          if (`${row.image}` !== "null") {
-            // 서버 OS Type이 Windows(Window_NT)일 때, Mac(Darwin)이거나 Linux/Unix/Ubuntu(Linux)일 때의 경로 구분자가 다르다.
-            const imageLink = ( (/Win/i.test(`${os_type}`)) ? `\\uploads\\${row.image}` : `/uploads/${row.image}`);
+        if (`${row.image}` !== "null") {
+          // 서버 OS Type이 Windows(Window_NT)일 때, Mac(Darwin)이거나 Linux/Unix/Ubuntu(Linux)일 때의 경로 구분자가 다르다.
+          const imageLink = ( (/Win/i.test(`${os_type}`)) ? `\\uploads\\${row.image}` : `/uploads/${row.image}`);
         %>
         <tr>
           <td>이미지</td>
@@ -134,6 +134,7 @@
           return false;
         }
       }
+      
       function deleteComment(frm) {
         if (confirm("정말 삭제하시겠습니까?")) {
           frm.action = "/post/<%=post_id%>/comment/delete";

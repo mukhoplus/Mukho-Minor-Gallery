@@ -1,5 +1,5 @@
-const moment = require("moment-timezone");
-const writeModel = require("../models/writeModel");
+import moment from "moment-timezone";
+import { createPost } from "../models/writeModel.js";
 
 const writeController = {};
 
@@ -30,7 +30,7 @@ writeController.createPost = async (req, res) => {
       post_date: postDate,
       image: image,
     };
-    await writeModel.createPost(postInfo);
+    await createPost(postInfo);
     res.redirect("/gallery");
   } catch (err) {
     console.error("Error creating post:", err);
@@ -38,4 +38,4 @@ writeController.createPost = async (req, res) => {
   }
 };
 
-module.exports = writeController;
+export default writeController;

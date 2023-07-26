@@ -1,8 +1,8 @@
-const express = require("express");
-const router = express.Router();
-const galleryController = require("../controllers/galleryController");
+import { Router } from "express";
+const router = Router();
+import galleryController from "../controllers/galleryController.js";
 
 router.get("/", galleryController.redirectToGallery);
 router.get("/:page", galleryController.renderGallery);
 
-module.exports = router;
+export default router;

@@ -1,12 +1,12 @@
-const express = require("express");
-const router = express.Router();
+import { Router } from "express";
+const router = Router();
 
-const mainRouter = require("./mainRouter");
-const logoutRouter = require("./logoutRouter");
-const signupRouter = require("./signupRouter");
-const galleryRouter = require("./galleryRouter");
-const postRouter = require("./postRouter");
-const writeRouter = require("./writeRouter");
+import mainRouter from "./mainRouter.js";
+import logoutRouter from "./logoutRouter.js";
+import signupRouter from "./signupRouter.js";
+import galleryRouter from "./galleryRouter.js";
+import postRouter from "./postRouter.js";
+import writeRouter from "./writeRouter.js";
 
 router.get("/", (req, res) => {
   if (req.user) res.redirect("/gallery");
@@ -20,4 +20,4 @@ router.use("/gallery", galleryRouter);
 router.use("/post", postRouter);
 router.use("/write", writeRouter);
 
-module.exports = router;
+export default router;
