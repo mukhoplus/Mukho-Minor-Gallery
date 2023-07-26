@@ -1,12 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const signupController = require("../controllers/signupController");
 const passport = require("passport");
 
-// 회원가입 페이지 라우트
-router.get("/", (req, res) => {
-  const msg = req.flash("error")[0] || null;
-  res.render("signup.ejs", { message: msg });
-});
+router.get("/", signupController.getSignupPage);
 
 router.post(
   "/",

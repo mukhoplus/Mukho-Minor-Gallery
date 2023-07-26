@@ -3,7 +3,6 @@ const http = require("http");
 const bodyParser = require("body-parser");
 const path = require("path");
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
 const session = require("express-session");
 const flash = require("connect-flash");
 const cookieParser = require("cookie-parser");
@@ -11,13 +10,12 @@ const cookieParser = require("cookie-parser");
 const router = require("./routes/index");
 const appConfig = require("./config/appConfig.js");
 const sessionConfig = require("./config/sessionConfig.js");
+const initializePassport = require("./config/passportConfig");
 
 const app = express();
 const server = http.createServer(app);
 const userSession = session(sessionConfig);
-
-// Database connection and error handling
-const dbConnection = require("./database/database");
+initializePassport(passport);
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -27,18 +25,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(userSession);
 app.use(flash());
 app.use(cookieParser());
-
-// Passport configuration
-const initializePassport = require("./config/passportConfig");
-initializePassport(passport);
 app.use(passport.initialize());
 app.use(passport.session());
-
-// Routes
 app.use(router);
 
 server.listen(appConfig.port, () => {
   console.log(
-    `묵호 마이너 갤러리(Ver 0.3.3)\n${appConfig.port}번 포트에서 서버가 시작되었어요.`
+    `묵호 마이너 갤러리(Ver 0.4.0)\n${appConfig.port}번 포트에서 서버가 시작되었어요.`
   );
 });
