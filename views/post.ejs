@@ -38,13 +38,13 @@
           <td>내용</td>
           <td style="white-space: pre-wrap"><%=row.content%></td>
         </tr>
-        <% const imageLink = `\\uploads\\${row.image}`; if (imageLink !== "\\null") { %>
+        <% const imageLink = `\\uploads\\${row.image}`; if (imageLink !== "\\uploads\\null") { %>
         <tr>
           <td>이미지</td>
           <td>
             <div class="bx_group">
               <a class="bx_content">
-                <img src="<%=imageLink%>" width="360" height="240" alt="..." />
+                <img src="<%=imageLink%>" alt="..." />
               </a>
             </div>
           </td>

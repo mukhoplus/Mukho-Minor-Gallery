@@ -39,6 +39,6 @@ app.use(router);
 
 server.listen(appConfig.port, () => {
   console.log(
-    `묵호 마이너 갤러리(Ver 0.3.2)\n${appConfig.port}번 포트에서 서버가 시작되었어요.`
+    `묵호 마이너 갤러리(Ver 0.3.3)\n${appConfig.port}번 포트에서 서버가 시작되었어요.`
   );
 });
