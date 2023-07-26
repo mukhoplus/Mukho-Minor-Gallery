@@ -1,149 +1,143 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>묵호 마이너 갤러리 - <%= title %></title>
-</head>
-<body>
+  </head>
+  <body>
     <a href="/main"><h1>묵호 마이너 갤러리</h1></a>
     <form action="delete/<%=post_id%>" method="post">
-        <table border="1">
-            <tr>
-                <td>제목</td>
-                <td><%=row.title%></td>
-            </tr>
-            <tr>
-                <td>글쓴이</td>
-                <td><%=row.nickname%></td>
-            </tr>
-            <tr>
-                <%
-                const date = new Date(row.post_date);
-                const year = date.getFullYear();
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const day = String(date.getDate()).padStart(2, '0');
-                const hour = String(date.getHours()).padStart(2, '0');
-                const minutes = String(date.getMinutes()).padStart(2, '0');
-                const seconds = String(date.getSeconds()).padStart(2, '0');
+      <table border="1">
+        <tr>
+          <td>제목</td>
+          <td><%=row.title%></td>
+        </tr>
+        <tr>
+          <td>글쓴이</td>
+          <td><%=row.nickname%></td>
+        </tr>
+        <tr>
+          <%
+          const date = new Date(row.post_date);
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, '0');
+          const day = String(date.getDate()).padStart(2, '0');
+          const hour = String(date.getHours()).padStart(2, '0');
+          const minutes = String(date.getMinutes()).padStart(2, '0');
+          const seconds = String(date.getSeconds()).padStart(2, '0');
+          const formattedDateString = `${year}-${month}-${day} ${hour}:${minutes}:${seconds}`;
+          %>
 
-                const formattedDateString = `${year}-${month}-${day} ${hour}:${minutes}:${seconds}`;
-                %>
-
-                <td>작성일</td>
-                <td><%=formattedDateString%></td>
-            </tr>
-            <tr>
-                <td>조회</td>
-                <td><%=row.hit%></td>
-            </tr>
-            <tr>
-                <td>내용</td>
-                <td style="white-space: pre-wrap;"><%=row.content%></td>
-            </tr>
-            <%
-                const imageLink = `\\${row.image}`;
-                if (imageLink !== "\\null") {
-            %>
-            <tr>
-                <td>이미지</td>
-                <td>
-                    <div class="bx_group">
-                        <a class = "bx_content">
-                            <img src="<%=imageLink%>" width = "360" height = "240" alt="...">  
-                        </a>
-                    </div>
-                </td>
-            </tr>
-            <%
-                }
-            %>
-            <tr>
-                <td colspan="3">
-                    <a href="/gallery">
-                        <input type="button" value="목록">
-                    </a>
-                    <%
-                    if(row.nickname == nickname) {
-                    %>
-                    <button type="summit" onclick="return deletePost();">글 삭제</button>
-                    <% 
-                    }
-                    %>
-                </td>
-            </tr>
-        </table>
+          <td>작성일</td>
+          <td><%=formattedDateString%></td>
+        </tr>
+        <tr>
+          <td>조회</td>
+          <td><%=row.hit%></td>
+        </tr>
+        <tr>
+          <td>내용</td>
+          <td style="white-space: pre-wrap"><%=row.content%></td>
+        </tr>
+        <% const imageLink = `\\uploads\\${row.image}`; if (imageLink !== "\\null") { %>
+        <tr>
+          <td>이미지</td>
+          <td>
+            <div class="bx_group">
+              <a class="bx_content">
+                <img src="<%=imageLink%>" width="360" height="240" alt="..." />
+              </a>
+            </div>
+          </td>
+        </tr>
+        <% } %>
+        <tr>
+          <td colspan="3">
+            <a href="/gallery">
+              <input type="button" value="목록" />
+            </a>
+            <% if(row.nickname == nickname) { %>
+            <button type="summit" onclick="return deletePost();">
+              글 삭제
+            </button>
+            <% } %>
+          </td>
+        </tr>
+      </table>
     </form>
     <form action="/post/<%=post_id%>/comment/" method="post">
-        <table border="1">
-            <input type="hidden" name="idx" value="<%=row.post_id%>"/>
-            <tr>
-                <td>닉네임</td>
-                <td>댓글</td>
-                <td>작성일</td>
-            </tr>
-            <%
-            for(var i = 0; i < comment_length; i++){
-                let data = comment[i];
-
-                const date = new Date(data.comment_date);
-                const year = date.getFullYear();
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const day = String(date.getDate()).padStart(2, '0');
-                const hour = String(date.getHours()).padStart(2, '0');
-                const minutes = String(date.getMinutes()).padStart(2, '0');
-                const seconds = String(date.getSeconds()).padStart(2, '0');
-
-                const formattedDateString = `${year}-${month}-${day} ${hour}:${minutes}:${seconds}`;
-            %>
-            
-            <tr>
-                <td><%=data.nickname%></td>
-                <td><%=data.content%></td>
-                <td><%=formattedDateString%></td>
-                <% if(data.nickname == nickname){ %>
-                    <td>
-                        <form method ="post">
-                            <input type="hidden" name="comment_id" value="<%=data.comment_id%>" minLength="1" maxLength="200" />
-                            <button type="button" onclick="return deleteComment(this.form);">댓글 삭제</button>
-                        </form>
-                    </td>
-                <% } %>
-            </tr>
-            <%
-            }
-            %>
-            <tr>
-                <td><%=nickname%></td>
-                <td><textarea name="comment" id="comment" cols="30" rows="2" required></textarea></td>
-                <td colspan="2">
-                    <button type="submit" onclick="return submitComment(this.form)">댓글 쓰기</button>
-                </td>
-            </tr>
-        </table>
+      <table border="1">
+        <input type="hidden" name="idx" value="<%=row.post_id%>" />
+        <tr>
+          <td>닉네임</td>
+          <td>댓글</td>
+          <td>작성일</td>
+        </tr>
+        <% for (var i = 0; i < comment_length; i++) { let data = comments[i];
+        const date = new Date(data.comment_date); const year =
+        date.getFullYear(); const month = String(date.getMonth() +
+        1).padStart(2, '0'); const day = String(date.getDate()).padStart(2,
+        '0'); const hour = String(date.getHours()).padStart(2, '0'); const
+        minutes = String(date.getMinutes()).padStart(2, '0'); const seconds =
+        String(date.getSeconds()).padStart(2, '0'); const formattedDateString =
+        `${year}-${month}-${day} ${hour}:${minutes}:${seconds}`; %>
+        <tr>
+          <td><%=data.nickname%></td>
+          <td><%=data.content%></td>
+          <td><%=formattedDateString%></td>
+          <% if(data.nickname == nickname){ %>
+          <td>
+            <form method="post">
+              <input
+                type="hidden"
+                name="comment_id"
+                value="<%=data.comment_id%>"
+                minLength="1"
+                maxLength="200"
+              />
+              <button type="button" onclick="return deleteComment(this.form);">
+                댓글 삭제
+              </button>
+            </form>
+          </td>
+          <% } %>
+        </tr>
+        <% } %>
+        <tr>
+          <td><%=nickname%></td>
+          <td>
+            <textarea
+              name="comment"
+              id="comment"
+              cols="30"
+              rows="2"
+              required
+            ></textarea>
+          </td>
+          <td colspan="2">
+            <button type="submit">댓글 쓰기</button>
+          </td>
+        </tr>
+      </table>
     </form>
     <script>
-        function deletePost() {
-            if(confirm("정말 삭제하시겠습니까?")){
-                alert("삭제되었습니다.");
-                return true;
-            }
-            else {
-                return false;
-            }
+      function deletePost() {
+        if (confirm("정말 삭제하시겠습니까?")) {
+          alert("삭제되었습니다.");
+          return true;
+        } else {
+          return false;
         }
-        function submitComment() {
-            frm.action="/post/<%=post_id%>/comment";
-            frm.submit();
-            return true;
+      }
+      function deleteComment(frm) {
+        if (confirm("정말 삭제하시겠습니까?")) {
+          frm.action = "/post/<%=post_id%>/comment/delete";
+          frm.submit();
+          alert("삭제되었습니다.");
+          return true;
+        } else {
+          return false;
         }
-        function deleteComment(frm) {
-            if(confirm("정말 삭제하시겠습니까?")){
-                alert("삭제되었습니다.");
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
+      }
     </script>
-</body>
+  </body>
 </html>
