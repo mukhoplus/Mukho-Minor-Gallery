@@ -1,3 +1,4 @@
+const os = require("os");
 const moment = require("moment-timezone");
 const postModel = require("../models/postModel");
 
@@ -22,10 +23,11 @@ postController.renderPostPage = async (req, res) => {
           ++post.hit;
           res.cookie(postId, "true", { maxAge: 60 * 60 * 1000 });
         }
-
+        
         const comments = await postModel.getCommentsByPostId(postId);
 
         res.render("post.ejs", {
+          os_type: os.type(),
           id: req.user.id,
           nickname: req.user.nickname,
           row: post,
