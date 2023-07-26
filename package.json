@@ -1,6 +1,6 @@
 {
   "name": "mukho-minor-gallery",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "묵마갤",
   "main": "app.mjs",
   "scripts": {
