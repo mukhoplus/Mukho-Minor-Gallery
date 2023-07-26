@@ -27,7 +27,9 @@ galleryController.renderGallery = async (req, res) => {
         page_num: 10,
       });
     } catch (err) {
-      console.error("Error rendering gallery:", err);
+      console.error(
+        `[${getCurrentTime()}] 갤러리 접근 중 오류가 발생했습니다.: ${err}`
+      );
       res.redirect("/gallery");
     }
   }

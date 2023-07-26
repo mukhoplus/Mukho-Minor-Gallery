@@ -1,3 +1,4 @@
+import moment from "moment-timezone";
 import dbConnection from "../database/database.js";
 
 export const queryAsync = (query, params) => {
@@ -7,4 +8,8 @@ export const queryAsync = (query, params) => {
       else resolve(rows);
     });
   });
+};
+
+export const getCurrentTime = () => {
+  return moment().tz("Asia/Seoul").format("YYYY-MM-DD HH:mm:ss");
 };

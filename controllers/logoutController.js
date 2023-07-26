@@ -1,3 +1,5 @@
+import { getCurrentTime } from "../util/util.js";
+
 const logoutController = {};
 
 logoutController.logout = (req, res) => {
@@ -8,10 +10,18 @@ logoutController.logout = (req, res) => {
     const nickname = req.user.nickname;
 
     req.logout((err) => {
-      if (err) console.log("로그아웃 중 오류가 발생했습니다.");
+      if (err)
+        console.log(
+          `[${getCurrentTime()}] 로그아웃 중 오류가 발생했습니다. ${err}`
+        );
 
       req.session.save(() => {
-        console.log(`Passport 세션이 제거되었습니다: ${id}(${nickname})`);
+        console.log(
+          `[${getCurrentTime()}] Passport 세션이 제거되었습니다: ${id}(${nickname})`
+        );
+        console.log(
+          `[${getCurrentTime()}] ${id}(${nickname})이(가) 로그아웃 했습니다.`
+        );
         res.redirect("/main");
       });
     });

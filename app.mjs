@@ -12,6 +12,7 @@ import router from "./routes/index.js";
 import appConfig from "./config/appConfig.js";
 import sessionConfig from "./config/sessionConfig.js";
 import { initializePassport } from "./config/passportConfig.js";
+import { getCurrentTime } from "./util/util.js";
 
 const { session: _session } = passport;
 const { json, urlencoded } = bodyParser;
@@ -42,6 +43,8 @@ app.use(router);
 
 server.listen(appConfig.port, () => {
   console.log(
-    `묵호 마이너 갤러리(Ver 0.5.1)\n${appConfig.port}번 포트에서 서버가 시작되었어요.`
+    `묵호 마이너 갤러리(Ver 0.5.2)\n[${getCurrentTime()}] ${
+      appConfig.port
+    }번 포트에서 서버가 시작되었어요.`
   );
 });

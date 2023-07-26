@@ -8,6 +8,7 @@ import {
   createComment,
   deleteCommentById,
 } from "../models/postModel.js";
+import { getCurrentTime } from "../util/util.js";
 
 const postController = {};
 
@@ -33,6 +34,12 @@ postController.renderPostPage = async (req, res) => {
 
         const comments = await getCommentsByPostId(postId);
 
+        console.log(
+          `[${getCurrentTime()}] ${req.user.id}(${
+            req.user.nickname
+          })이(가) ${postId}번 게시글을 조회했습니다.`
+        );
+
         res.render("post.ejs", {
           os_type: type(),
           id: req.user.id,
@@ -45,7 +52,11 @@ postController.renderPostPage = async (req, res) => {
         });
       }
     } catch (err) {
-      console.error("Error rendering post page:", err);
+      console.log(
+        `[${getCurrentTime()}] ${req.user.id}(${req.user.nickname})의 ${
+          req.params.post_id
+        }번 게시글 조회 과정에서 오류가 발생했습니다. ${err}`
+      );
       res.redirect("/gallery");
     }
   }
@@ -55,9 +66,18 @@ postController.deletePost = async (req, res) => {
   try {
     const postId = req.params.post_id;
     await deletePostById(postId);
+    console.log(
+      `[${getCurrentTime()}] ${req.user.id}(${
+        req.user.nickname
+      })이(가) ${postId}번 게시글을 삭제했습니다.`
+    );
     res.redirect("/gallery");
   } catch (err) {
-    console.error("Error deleting post:", err);
+    console.log(
+      `[${getCurrentTime()}] ${req.user.id}(${req.user.nickname})의 ${
+        req.params.post_id
+      }번 게시글 삭제 과정에서 오류가 발생했습니다. ${err}`
+    );
     res.redirect("/gallery");
   }
 };
@@ -70,10 +90,19 @@ postController.createComment = async (req, res) => {
     const commentDate = moment().tz("Asia/Seoul").format("YYYY-MM-DD HH:mm:ss");
 
     await createComment(content, writer, postId, commentDate);
+    console.log(
+      `[${getCurrentTime()}] ${req.user.id}(${
+        req.user.nickname
+      })이(가) ${postId}번 게시글에 댓글을 작성했습니다.`
+    );
     res.redirect(`/post/${postId}`);
   } catch (err) {
-    console.error("Error creating comment:", err);
-    res.redirect(`/post/${postId}`);
+    console.error(
+      `[${getCurrentTime()}] ${req.user.id}(${req.user.nickname})의 ${
+        req.params.post_id
+      }번 게시글 댓글 작성 과정에서 오류가 발생했습니다. ${err}`
+    );
+    res.redirect(`/post/${req.params.post_id}`);
   }
 };
 
@@ -82,10 +111,19 @@ postController.deleteComment = async (req, res) => {
     const commentId = req.body.comment_id;
     const postId = req.params.post_id;
     await deleteCommentById(commentId);
+    console.log(
+      `[${getCurrentTime()}] ${req.user.id}(${
+        req.user.nickname
+      })이(가) ${postId}번 게시글에서 댓글을 삭제했습니다.`
+    );
     res.redirect(`/post/${postId}`);
   } catch (err) {
-    console.error("Error deleting comment:", err);
-    res.redirect(`/post/${postId}`);
+    console.error(
+      `[${getCurrentTime()}] ${req.user.id}(${req.user.nickname})의 ${
+        req.params.post_id
+      }번 게시글 댓글 삭제 과정에서 오류가 발생했습니다. ${err}`
+    );
+    res.redirect(`/post/${req.params.post_id}`);
   }
 };
 

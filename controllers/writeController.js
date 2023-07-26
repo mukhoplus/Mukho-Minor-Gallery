@@ -1,5 +1,5 @@
-import moment from "moment-timezone";
 import { createPost } from "../models/writeModel.js";
+import { getCurrentTime } from "../util/util.js";
 
 const writeController = {};
 
@@ -16,7 +16,7 @@ writeController.createPost = async (req, res) => {
     const title = req.body.title;
     const content = req.body.content;
     const writer = req.user.userId;
-    const postDate = moment().tz("Asia/Seoul").format("YYYY-MM-DD HH:mm:ss");
+    const postDate = getCurrentTime();
     let image = null;
 
     if (req.file) {
@@ -31,9 +31,16 @@ writeController.createPost = async (req, res) => {
       image: image,
     };
     await createPost(postInfo);
+    console.log(
+      `[${postDate}] ${req.user.id}(${req.user.nickname})이(가) 게시글을 작성했습니다.`
+    );
     res.redirect("/gallery");
   } catch (err) {
-    console.error("Error creating post:", err);
+    console.log(
+      `[${getCurrentTime()}] ${req.user.id}(${
+        req.user.nickname
+      })의 게시글 작성 과정에서 오류가 발생했습니다. ${err}`
+    );
     res.redirect("/gallery");
   }
 };

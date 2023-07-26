@@ -1,6 +1,6 @@
 # Mukho-Minor-Gallery
 
-[묵호 마이너 갤러리](http://mukho.r-e.kr:2023/)(Ver 0.5.1)
+[묵호 마이너 갤러리](http://mukho.r-e.kr:2023/)(Ver 0.5.2)
 
 - Mukstcamp Project 3
 
@@ -21,3 +21,4 @@
   - 조회수: 로컬 환경에서 1시간 이내에 재접속시 조회수 카운팅 안함
 - 게시글 보기, 삭제
 - 댓글 달기, 삭제
+- 로그 기능
