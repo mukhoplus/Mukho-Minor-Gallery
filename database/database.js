@@ -33,7 +33,7 @@ function executeSelectQuery() {
       return;
     }
 
-    console.log(`[${getCurrentTime()}] 서버는 안전합니다.`);
+    // console.log(`[${getCurrentTime()}] 서버는 안전합니다.`);
   });
 }
 
