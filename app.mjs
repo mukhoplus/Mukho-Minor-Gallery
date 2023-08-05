@@ -43,7 +43,7 @@ app.use(router);
 
 server.listen(appConfig.port, () => {
   console.log(
-    `묵호 마이너 갤러리(Ver 1.0.0)\n[${getCurrentTime()}] ${
+    `묵호 마이너 갤러리(Ver 1.0.1)\n[${getCurrentTime()}] ${
       appConfig.port
     }번 포트에서 서버가 시작되었어요.`
   );

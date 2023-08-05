@@ -37,6 +37,7 @@
       <form action="/main" method="post">
         <input
           type="text"
+          id="id"
           name="id"
           class="form-control"
           placeholder="아이디"
@@ -46,6 +47,7 @@
         /><br />
         <input
           type="password"
+          id="pw"
           name="password"
           class="form-control"
           placeholder="비밀번호"
@@ -58,16 +60,18 @@
             class="w-50 btn btn-success"
             type="submit"
             value="로그인"
-          /><button
+          />
+          <button
             class="w-50 btn btn-primary"
             onclick="location.href='/signup'"
           >
             회원가입
           </button>
+          </div>
+          <section class="messages" style="color: crimson">
+            <%= message %>
+          </section>
         </div>
-        <section class="messages" style="color: crimson">
-          <%= message %>
-        </section>
       </form>
     </div>
     <script
