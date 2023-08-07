@@ -1,6 +1,6 @@
 # Mukho-Minor-Gallery
 
-[묵호 마이너 갤러리](http://mukho.r-e.kr:2023/)(Ver 1.1.1)
+[묵호 마이너 갤러리](http://mukho.r-e.kr:2023/)(Ver 1.1.2)
 
 - Mukstcamp Project 3
 
@@ -22,6 +22,7 @@
 - 게시글 보기, 삭제
 - 댓글 달기, 삭제
 - 로그 기능
+- HTTPS
 
 ## 확인된 버그
 
