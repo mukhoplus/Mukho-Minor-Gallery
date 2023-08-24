@@ -19,7 +19,7 @@ import { getCurrentTime } from "./util/util.js";
 const { session: _session } = passport;
 const { json, urlencoded } = bodyParser;
 
-const version = "1.1.3";
+const version = "1.1.4";
 const httpsOptions = {
   key: fs.readFileSync("./rootca.key"),
   cert: fs.readFileSync("./rootca.crt")

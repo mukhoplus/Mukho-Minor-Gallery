@@ -16,7 +16,7 @@ function handleDisconnect() {
     }
   
     connection.on("error", (err) => {
-      if(err.code === "PROTOCOL_CONNECTION_LOST") {
+      if(err.code in ["PROTOCOL_PACKETS_OUT_OF_ORDER", "PROTOCOL_CONNECTION_LOST"]) {
         return handleDisconnect();
       } else {
         throw err;
